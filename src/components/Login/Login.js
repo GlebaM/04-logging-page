@@ -6,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 import AuthContext from "../../store/auth-context";
+import { emailReducer, passwordReducer } from "../../store/reducers";
 
 import Card from "../UI/Card/Card";
 import Input from "../UI/Input/Input";
@@ -13,59 +14,20 @@ import Button from "../UI/Button/Button";
 
 import classes from "./Login.module.css";
 
-const emailReducer = (state, action) => {
-  if (action.type === "USER_INPUT") {
-    return {
-      value: action.val,
-      isValid: action.val.includes("@") && action.val.includes(".com"),
-    };
-  }
-
-  if (action.type === "INPUT_BLUR") {
-    return {
-      value: state.value,
-      isValid: state.value.includes("@") && state.value.includes(".com"),
-    };
-  }
-
-  return { value: "", isValid: false };
-};
-
-const passwordReducer = (state, action) => {
-  if (action.type === "USER_INPUT") {
-    return {
-      value: action.val,
-      isValid: action.val.trim().length > 6,
-    };
-  }
-
-  if (action.type === "INPUT_BLUR") {
-    return {
-      value: state.value,
-      isValid: state.value.trim().length > 6,
-    };
-  }
-
-  return { value: "", isValid: false };
+const initialState = {
+  value: "",
+  isValid: null,
 };
 
 const Login = (props) => {
-  // const [enteredEmail, setEnteredEmail] = useState("");
-  // const [emailIsValid, setEmailIsValid] = useState();
-  // const [enteredPassword, setEnteredPassword] = useState("");
-  // const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
-  //EmailReducer
-  const [emailState, dispatchEmail] = useReducer(emailReducer, {
-    value: "",
-    isValid: null,
-  });
-  //PasswordReducer
-  const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-    value: "",
-    isValid: null,
-  });
+  //Email & Password Reducer
+  const [emailState, dispatchEmail] = useReducer(emailReducer, initialState);
+  const [passwordState, dispatchPassword] = useReducer(
+    passwordReducer,
+    initialState
+  );
 
   //Auth Context
   const authCtx = useContext(AuthContext);
@@ -90,19 +52,10 @@ const Login = (props) => {
 
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
-
-    // setFormIsValid(
-    //   event.target.value.includes("@") &&
-    //     event.target.value.includes(".com") &&
-    //     passwordState.isValid
-    // );
   };
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
-    // setEnteredPassword(event.target.value);
-
-    // setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
   };
 
   const validateEmailHandler = () => {
@@ -111,7 +64,6 @@ const Login = (props) => {
 
   const validatePasswordHandler = () => {
     dispatchPassword({ type: "INPUT_BLUR" });
-    // setPasswordIsValid(enteredPassword.trim().length > 6);
   };
 
   const submitHandler = (event) => {
@@ -160,4 +112,3 @@ const Login = (props) => {
 };
 
 export default Login;
-// disabled={!formIsValid}

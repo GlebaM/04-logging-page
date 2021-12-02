@@ -6,8 +6,10 @@ import classes from "./MainHeader.module.css";
 const MainHeader = () => {
   return (
     <header className={classes["main-header"]}>
-      <h1>A Typical Page</h1>
-      <Navigation />
+      <div className={classes["wrap-header"]}>
+        <h1>A Typical Page</h1>
+        <Navigation />
+      </div>
     </header>
   );
 };

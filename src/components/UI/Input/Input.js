@@ -19,10 +19,7 @@ const Input = React.forwardRef((props, ref) => {
   return (
     <Fragment>
       <div
-        className={`${classes.control} ${
-          // !emailState.isValid ? classes.invalid : ""
-          props.isValid === false ? classes.invalid : ""
-        }`}
+        className={`${classes.control} ${!props.isValid && classes.invalid}`}
       >
         <label htmlFor={props.id}>{props.label}</label>
         <input
